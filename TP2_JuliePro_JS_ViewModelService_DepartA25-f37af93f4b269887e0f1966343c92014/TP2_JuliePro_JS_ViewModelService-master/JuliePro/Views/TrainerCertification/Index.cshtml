@@ -1,0 +1,63 @@
+@model IEnumerable<JuliePro.Models.TrainerCertification>
+
+<script>
+    // TODO: Ajouter la méthode highlightByName()
+
+    // TODO: Ajouter la méthode filterByDate()
+</script>
+
+@{
+    ViewData["Title"] = @Locals["Index"];
+}
+
+<h1>@Locals["Index"]</h1>
+
+<p>
+    <a asp-action="Create">@Locals["Create New"]</a>
+</p>
+
+<h4>@Locals["HighlightByName"]</h4>
+<input type="text" oninput="highlightByName()" />
+
+<h4>@Locals["FilterByDate"]</h4>
+<input type="date" />
+<button onclick="filterByDate()" class="btn btn-primary">@Locals["Filter"]</button>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Trainer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Certification)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateCertification)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                 <a asp-action="Filter" asp-controller="Trainer" asp-route-SearchNameText="@item.Trainer.FullName">
+                    @Html.DisplayFor(modelItem => item.Trainer.FullName)
+                </a>
+            </td>
+            <td>
+                <a asp-action="Details" asp-controller="Certification" asp-route-id="@item.Certification_Id">   @Html.DisplayFor(modelItem => item.Certification.FullTitle) </a>
+            </td>
+            <td>
+                @item.DateCertification.ToShortDateString()
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">@Locals["Edit"]</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">@Locals["Details"]</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">@Locals["Delete"]</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

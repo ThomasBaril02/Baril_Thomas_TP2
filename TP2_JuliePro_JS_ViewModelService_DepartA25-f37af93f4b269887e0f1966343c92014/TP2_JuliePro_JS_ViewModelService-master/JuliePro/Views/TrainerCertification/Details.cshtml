@@ -1,0 +1,36 @@
+@model JuliePro.Models.TrainerCertification
+
+@{
+    ViewData["Title"] = @Locals["Details"];
+}
+
+<h1>@Locals["Details"]</h1>
+
+<div>
+    <h4>@Locals["TrainerCertification"]</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Trainer)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Trainer.Biography)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Certification)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Certification.CertificationCenter)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DateCertification)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DateCertification)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">@Locals["Edit"]</a> |
+    <a asp-action="Index">@Locals["Back to List"]</a>
+</div>

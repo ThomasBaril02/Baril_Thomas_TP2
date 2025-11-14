@@ -1,0 +1,43 @@
+﻿@model TrainerCertificationViewModel
+
+@{
+    ViewData["Title"] = @Locals["Index"];
+}
+
+<h3>@Locals["CertificationsOf",@Model.Trainer.FullName]</h3>
+
+@if(Model.Certifications.Any()){
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Certifications.First().FullTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Certifications.First().TrainerCertifications)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Certifications) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullTitle)
+            </td>
+            <td>
+                @foreach (var trainer in @item.TrainerCertifications)
+                    {
+                <span class="enumeration">@trainer.Trainer.FullName</span>
+                    }
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">@Locals["Edit"]</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+}
+
+             <a asp-action="Filter" asp-controller="Trainer" asp-route-SearchNameText="@Model.Trainer.FullName">@Locals["Back to List"]</a>

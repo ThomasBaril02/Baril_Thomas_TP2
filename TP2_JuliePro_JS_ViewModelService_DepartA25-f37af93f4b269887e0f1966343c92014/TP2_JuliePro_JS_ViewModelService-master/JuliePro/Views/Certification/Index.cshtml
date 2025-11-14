@@ -1,0 +1,49 @@
+@model IEnumerable<JuliePro.Models.Certification>
+
+@{
+    ViewData["Title"] = @Locals["Index"];
+}
+
+<h1>@Locals["Index"]</h1>
+
+<p>
+    <a asp-action="Create">@Locals["Create New"]</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FullTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TrainerCertifications)
+            </th>
+            <th colspan="2"></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullTitle)
+            </td>
+            <td>
+                @foreach (var trainer in @item.TrainerCertifications)
+                    {
+                <span class="enumeration">@trainer.Trainer.FullName</span>
+                    }
+           
+                 
+                </td>
+                <td> <a asp-action="Create" asp-controller="TrainerCertification" asp-route-certificationId="@item.Id" class="btn btn-sm btn-primary"><i class="fa-solid fa-plus"></i> 
+                @Html.DisplayNameFor(model => model.TrainerCertifications)</a>
+              </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">@Locals["Edit"]</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">@Locals["Details"]</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">@Locals["Delete"]</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
