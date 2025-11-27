@@ -2,7 +2,24 @@
 
 <script>
     // TODO: Ajouter la méthode highlightByName()
+    function highlightByName() {
+        let a = document.getElementById("highlightinput").value
+            .toLowerCase()
+            .trim();
 
+        let b = document.querySelectorAll("table tbody tr");
+
+        b.forEach(row => {
+            // La cellule du nom du trainer est la 1re colonne (<td>)
+            let c = row.cells[0].innerText.toLowerCase();
+
+            if (a !== "" && c.includes(a)) {
+                row.style.backgroundColor = "yellow";
+            } else {
+                row.style.backgroundColor = "";
+            }
+        });
+    }
     // TODO: Ajouter la méthode filterByDate()
 </script>
 
@@ -17,7 +34,7 @@
 </p>
 
 <h4>@Locals["HighlightByName"]</h4>
-<input type="text" oninput="highlightByName()" />
+<input id="highlightinput" type="text" oninput="highlightByName()" />
 
 <h4>@Locals["FilterByDate"]</h4>
 <input type="date" />
