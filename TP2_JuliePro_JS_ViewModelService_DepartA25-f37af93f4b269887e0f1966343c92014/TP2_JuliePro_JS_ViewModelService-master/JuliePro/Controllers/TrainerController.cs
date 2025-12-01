@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using JuliePro.Services;
 using JuliePro.Models;
 using JuliePro.Utility;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace JuliePro.Controllers
 {
@@ -37,8 +38,13 @@ namespace JuliePro.Controllers
         public async Task<IActionResult> Filter(TrainerSearchViewModelFilter filter)
         {
             //TODO implantez cette méthode (vous pouvez retourner la vue Index, avec le modèle filtré)!
-
-            return RedirectToAction(nameof(Index));
+            if(filter== null)
+            {
+                return RedirectToAction("Index");
+            }
+            var trainrs = await this._service.GetAllAsync(filter);
+          
+            return View(trainrs);
         }
 
 

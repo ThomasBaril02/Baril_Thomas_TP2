@@ -3,6 +3,23 @@
 @{
     ViewData["Title"] = @Locals["Index"];
 }
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(function () {
+                // Au survol de n'importe quelle carte dans la grille
+                $('.grid-layout .card').hover(
+                    function () { // mouse enter
+                        $(this).find('aside').addClass('show');
+                    },
+                    function () { // mouse leave
+                        $(this).find('aside').removeClass('show');
+                    }
+                );
+            });
+
+    </script>
+}
 
 
     <div class="wrapper">
