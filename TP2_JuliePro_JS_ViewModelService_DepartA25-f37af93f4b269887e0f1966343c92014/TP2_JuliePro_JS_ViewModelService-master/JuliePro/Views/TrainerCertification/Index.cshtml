@@ -1,7 +1,7 @@
-@model IEnumerable<JuliePro.Models.TrainerCertification>
+ï»¿@model IEnumerable<JuliePro.Models.TrainerCertification>
 
 <script>
-    // TODO: Ajouter la méthode highlightByName()
+    // TODO: Ajouter la mÃ©thode highlightByName()
     function highlightByName() {
         let a = document.getElementById("highlightinput").value
             .toLowerCase()
@@ -10,7 +10,6 @@
         let b = document.querySelectorAll("table tbody tr");
 
         b.forEach(row => {
-            // La cellule du nom du trainer est la 1re colonne (<td>)
             let c = row.cells[0].innerText.toLowerCase();
 
             if (a !== "" && c.includes(a)) {
@@ -20,7 +19,39 @@
             }
         });
     }
-    // TODO: Ajouter la méthode filterByDate()
+    // TODO: Ajouter la mÃ©thode filterByDate()
+    function filterByDate() {
+
+        const a = document.getElementById("DateValue").value.trim();
+
+        const b = document.getElementsByClassName("TrainersDate");
+
+        const c = document.getElementsByClassName("RowTrainers");
+
+        for(let i = 0; i < b.length; i++){
+
+            const d = c[i];
+
+            const e = b[i];
+
+            const f = e.textContent.trim();
+
+            if(a <= f){
+
+               d.style.display = ""
+
+            }
+            else{
+
+                d.style.display = "none";
+
+            }
+
+
+        }
+   
+    }
+
 </script>
 
 @{
@@ -37,8 +68,8 @@
 <input id="highlightinput" type="text" oninput="highlightByName()" />
 
 <h4>@Locals["FilterByDate"]</h4>
-<input type="date" />
-<button onclick="filterByDate()" class="btn btn-primary">@Locals["Filter"]</button>
+<input id="DateValue" type="date" />
+<button id="filterBySate" onclick="filterByDate()" class="btn btn-primary">@Locals["Filter"]</button>
 
 <table class="table">
     <thead>
@@ -57,7 +88,7 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+        <tr class="RowTrainers">
             <td>
                  <a asp-action="Filter" asp-controller="Trainer" asp-route-SearchNameText="@item.Trainer.FullName">
                     @Html.DisplayFor(modelItem => item.Trainer.FullName)
@@ -66,7 +97,7 @@
             <td>
                 <a asp-action="Details" asp-controller="Certification" asp-route-id="@item.Certification_Id">   @Html.DisplayFor(modelItem => item.Certification.FullTitle) </a>
             </td>
-            <td>
+            <td class="TrainersDate">
                 @item.DateCertification.ToShortDateString()
             </td>
             <td>

@@ -44,7 +44,7 @@ namespace JuliePro.Controllers
             }
             var trainrs = await this._service.GetAllAsync(filter);
           
-            return View(trainrs);
+            return View("Index", trainrs);
         }
 
 
