@@ -26,6 +26,8 @@ namespace JuliePro.Models
         [Display(Name = "SelectedPageIndex")]
         public int SelectedPageIndex { get; set; }
 
+        public List<Trainer> trainers { get; set; }
+
         public void VerifyProperties()
         {
             this.SelectedDisciplineId = this.SelectedDisciplineId == 0 ? null : this.SelectedDisciplineId;

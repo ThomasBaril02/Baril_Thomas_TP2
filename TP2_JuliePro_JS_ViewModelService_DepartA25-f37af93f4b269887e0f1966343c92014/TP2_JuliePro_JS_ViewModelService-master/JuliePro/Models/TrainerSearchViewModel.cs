@@ -43,5 +43,7 @@ namespace JuliePro.Models
         
         [Display(Name = "AvailablePageSizes")]
         public SelectList AvailablePageSizes { get; set; }
+
+        public List<Trainer> Traineers {  get; set; }
     }
 }

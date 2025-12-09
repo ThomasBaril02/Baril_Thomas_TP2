@@ -3,6 +3,7 @@ using JuliePro.Models;
 using JuliePro.Utility;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace JuliePro.Services
@@ -44,39 +45,34 @@ namespace JuliePro.Services
             //int pageSize = filter.SelectedPageSize;
 
             //TODO: Ajouter les filtres
-            IQueryable<Trainer> filtre = _dbContext.Trainers
-                .Include(t => t.Discipline)
-                .Include(t => t.TrainerCertifications)
-                    .ThenInclude(tc => tc.Certification);
-
-            if (!string.IsNullOrWhiteSpace(filter.SearchNameText))
-            {
-                string search = filter.SearchNameText.ToLower();
-                filtre = filtre.Where(t =>
-                    t.FirstName.ToLower().Contains(search) ||
-                    t.LastName.ToLower().Contains(search) ||
-                    (t.Discipline != null && t.Discipline.Name.ToLower().Contains(search))
-                );
-            }
+            IQueryable<Trainer> b = _dbContext.Trainers.Include(a=>a.TrainerCertifications).ThenInclude(a=>a.Certification);
             
-            if (filter.SelectedDisciplineId.HasValue && filter.SelectedDisciplineId.Value > 0)
+            if (!result.SearchNameText.IsNullOrEmpty())
             {
-                filtre = filtre.Where(t => t.Discipline_Id == filter.SelectedDisciplineId.Value);
+                b  = b.Where(a => a.FirstName.Contains(result.SearchNameText) || a.LastName.Contains(result.SearchNameText));
             }
-
-            if (filter.SelectedCertificationId.HasValue && filter.SelectedCertificationId.Value > 0)
+            if (result.SelectedGender != null)
             {
-                filtre = filtre.Where(t => t.TrainerCertifications.Any(tc => tc.Certification_Id == filter.SelectedCertificationId.Value));
+                b = b.Where(a=>a.Genre == result.SelectedGender);
             }
-
-
-            result.Items = await _dbContext.Trainers.ToPaginatedAsync(pageIndex, pageSize);
-
+            if (result.SelectedDisciplineId.HasValue)
+            {
+                b = b.Where(a => a.Discipline_Id == result.SelectedDisciplineId);
+            }
+            if (result.SelectedCertificationId.HasValue)
+            {
+                b = b.Where(a => a.TrainerCertifications.Any(a => a.Certification_Id == result.SelectedCertificationId));
+            }
+            if (!result.SelectedCertificationCenter.IsNullOrEmpty())
+            {
+                b = b.Where(a => a.TrainerCertifications.Any(a => a.Certification.CertificationCenter == result.SelectedCertificationCenter));
+            }
+            result.Items = await b.ToPaginatedAsync(pageIndex, pageSize);
             //TODO: Ajouter les éléments dans les SelectLists 
             result.AvailablePageSizes = new SelectList(new List<int>() { 9, 12, 18, 21 });
-            result.Disciplines = new SelectList(new List<Discipline>(), "Id", "Name");
-            result.Certifications = new SelectList(new List<Certification>(), "Id", "FullTitle");
-            result.CertificationCenters = new SelectList(new List<string>());
+            result.Disciplines = new SelectList(_dbContext.Disciplines, "Id", "Name");
+            result.Certifications = new SelectList(_dbContext.Certifications, "Id", "FullTitle");
+            result.CertificationCenters = new SelectList(_dbContext.Certifications.Select(a=>a.CertificationCenter).Distinct().ToList());
 
             return result;
         }
