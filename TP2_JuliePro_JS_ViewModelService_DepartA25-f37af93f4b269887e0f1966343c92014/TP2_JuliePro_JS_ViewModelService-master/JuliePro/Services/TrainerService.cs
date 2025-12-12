@@ -41,8 +41,6 @@ namespace JuliePro.Services
             int pageIndex = filter.SelectedPageIndex;
             int pageSize = filter.SelectedPageSize;
             // TODO: Remplacer par ce code une fois que vous commencez à implémenter la pagination
-            //int pageIndex = filter.SelectedPageIndex;
-            //int pageSize = filter.SelectedPageSize;
 
             //TODO: Ajouter les filtres
             IQueryable<Trainer> b = _dbContext.Trainers.Include(a=>a.TrainerCertifications).ThenInclude(a=>a.Certification);
